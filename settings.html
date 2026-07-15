@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings – RepairFlow CRM</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="simple-page">
+    <h1>Shop Settings</h1>
+    <form id="shopSettingsForm" class="repair-form">
+      <div class="form-row">
+        <div class="form-group"><label>Shop Name</label><input type="text" id="shopName" required></div>
+        <div class="form-group"><label>Owner</label><input type="text" id="ownerName" required></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Phone</label><input type="tel" id="shopPhone" required></div>
+        <div class="form-group"><label>Email</label><input type="email" id="shopEmail"></div>
+      </div>
+      <div class="form-group"><label>Address</label><textarea id="shopAddress" rows="2" required></textarea></div>
+      <div class="form-group"><label>GST Number</label><input type="text" id="shopGST"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Currency</label><select id="currency"><option>₹</option><option>$</option><option>€</option></select></div>
+        <div class="form-group"><label>Theme</label><select id="theme"><option>Light</option><option>Dark (coming soon)</option></select></div>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Settings</button>
+    </form>
+    <p id="settingsFeedback" class="feedback-message"></p>
+    <a href="index.html" class="btn btn-secondary" style="margin-top:20px;">← Back to App</a>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script>
+    // Simple settings page logic (self‑contained)
+    const form = document.getElementById('shopSettingsForm');
+    const fb = document.getElementById('settingsFeedback');
+
+    function loadSettings() {
+      const s = getShopSettings();
+      document.getElementById('shopName').value = s.shopName;
+      document.getElementById('ownerName').value = s.ownerName;
+      document.getElementById('shopPhone').value = s.phone;
+      document.getElementById('shopEmail').value = s.email;
+      document.getElementById('shopAddress').value = s.address;
+      document.getElementById('shopGST').value = s.gst;
+      document.getElementById('currency').value = s.currency || '₹';
+      document.getElementById('theme').value = s.theme || 'Light';
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const settings = {
+        shopName: document.getElementById('shopName').value.trim(),
+        ownerName: document.getElementById('ownerName').value.trim(),
+        phone: document.getElementById('shopPhone').value.trim(),
+        email: document.getElementById('shopEmail').value.trim(),
+        address: document.getElementById('shopAddress').value.trim(),
+        gst: document.getElementById('shopGST').value.trim(),
+        currency: document.getElementById('currency').value,
+        theme: document.getElementById('theme').value
+      };
+      saveShopSettings(settings);
+      fb.textContent = 'Settings saved!';
+      fb.className = 'feedback-message success';
+      setTimeout(() => fb.className = 'feedback-message', 3000);
+    });
+
+    loadSettings();
+  </script>
+</body>
+</html>
